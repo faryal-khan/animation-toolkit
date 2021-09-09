@@ -15,7 +15,13 @@ class Sphere2D : public atkui::Framework {
     double x = width() * 0.5;
     double y = height() * 0.5;
     double radius = 100; 
+    double radius2 = 200;
     drawSphere(vec3(x,y,0), radius);
+    //set red color for new sphere
+    setColor(vec3(1,0,0));
+    // draw red sphere behind previous sphere
+    drawSphere(vec3(x, y, -500), radius2);
+    
   }
 };
 

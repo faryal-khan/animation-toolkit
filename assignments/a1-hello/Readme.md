@@ -3,4 +3,6 @@ a1- eyes
 
 
 
-![Screen Recording 2021-09-17 at 3 49 02 PM](https://user-images.githubusercontent.com/56316748/133846071-fea516b8-456d-457d-92d0-b5357461253d.gif)
+
+https://user-images.githubusercontent.com/56316748/133846311-aeef02ba-6b0a-450c-927e-8bb3756e06a5.mov
+

@@ -51,14 +51,14 @@ class DrawCubic : public atkui::Framework
           //Level 3
 
           vec3 b30 = (b20 *current) + (b21 *t);
-          setColor(vec3(0, 0, 1));
+          setColor(vec3(0, 1, 0));
           drawSphere(b30, 2);
        }
 
     }
 
   }
-  
+
   void keyUp(int key, int mod) {
     if (key == GLFW_KEY_1) {
       onepr= true;

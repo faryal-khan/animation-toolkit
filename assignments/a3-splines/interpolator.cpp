@@ -1,5 +1,6 @@
 #include "interpolator.h"
 
+
 Interpolator::Interpolator(const std::string& type) : 
    mCtrlPoints(),
    mType(type) {

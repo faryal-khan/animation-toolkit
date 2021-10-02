@@ -30,7 +30,8 @@ void CurveEditor::setup() {
 
 void CurveEditor::scene() {
   drawState();
-  // todo: your code here
+
+
 }
 
 void CurveEditor::addPoint(const vec3& p) {
@@ -186,6 +187,7 @@ void CurveEditor::keyUp(int pKey, int mods) {
     mHermite.setClamped(!mHermite.isClamped());
     mSpline.computeControlPoints();
   } 
+
 }
 
 int main(int argc, char** argv)

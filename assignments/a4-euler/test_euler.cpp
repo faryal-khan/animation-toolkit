@@ -358,12 +358,12 @@ int main(int argc, char** argv)
 {
     RUN_TEST(TestIdentity())
 
-    RUN_TEST(TestEulerToMatrix_XYZ());
-    RUN_TEST(TestEulerToMatrix_XZY());
-    RUN_TEST(TestEulerToMatrix_YXZ());
-    RUN_TEST(TestEulerToMatrix_YZX());
-    RUN_TEST(TestEulerToMatrix_ZXY());
-    RUN_TEST(TestEulerToMatrix_ZYX());
+   RUN_TEST(TestEulerToMatrix_XYZ());
+  RUN_TEST(TestEulerToMatrix_XZY());
+  RUN_TEST(TestEulerToMatrix_YXZ());
+  RUN_TEST(TestEulerToMatrix_YZX());
+   RUN_TEST(TestEulerToMatrix_ZXY());
+   RUN_TEST(TestEulerToMatrix_ZYX());
 
     RUN_TEST(Test909090());
     RUN_TEST(TestMinus909090());

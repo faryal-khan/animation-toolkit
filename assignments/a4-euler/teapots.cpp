@@ -171,7 +171,7 @@ void TeapotsViewer::teapots()
   translate(vec3(0, 0, 0));
   pushEulerRotation(YZX, testYZX);
   drawTeapot(vec3(0), size);
-  pop();
+  pop(); 
 
   // TEST CONVERTING matrix to EULER ZXY
   push();

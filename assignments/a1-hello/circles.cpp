@@ -39,7 +39,6 @@ public:
          newRad += 20; 
          newAngle = 0.0;
       }
-   
       
    }
 

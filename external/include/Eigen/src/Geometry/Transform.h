@@ -85,7 +85,7 @@ template<int Mode> struct transform_make_affine;
 
 /** \geometry_module \ingroup Geometry_Module
   *
-  * \class Transform
+  * \class 
   *
   * \brief Represents an homogeneous transformation in a N dimensional space
   *

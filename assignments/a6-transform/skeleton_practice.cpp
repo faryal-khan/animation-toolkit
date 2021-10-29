@@ -11,7 +11,7 @@ int main(int argc, char** argv)
    BVHReader reader;
    reader.load("../motions/Beta/idle.bvh", skeleton, motion);
 
-   int numJoints = 5; 
+   int numJoints = 15; 
    std::cout << "The number of joints is " << numJoints << std::endl;
 
    // todo: loop through and print all joint names
@@ -37,12 +37,12 @@ int main(int argc, char** argv)
    } 
 
    // Get the joint for the hand by looking up by name ("Beta:LeftHand")
-   Joint* hand = skeleton.getByName("Beta:LeftHand");
+   Joint* hand = skeleton.getByName("Beta:LeftHand\r");
    vec3 offset; // todo get the local offset from the hand to its parent 
-   offset = hand.get;
+   offset = hand->getLocalTranslation();
    std::cout << "The offset between the left hand and its parent is " << glm::to_string(offset) << std::endl;
 
    // todo: get the hand's parent joint's name
-   std::string handParentName = "";
-   std::cout << "The parent of the hand is " << handParentName << std::endl;
+   //std::string handParentName = hand->getParent()->getName();
+   //std::cout << "The parent of the hand is " << handParentName << std::endl;
 }

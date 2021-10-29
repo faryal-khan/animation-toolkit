@@ -52,9 +52,10 @@ public:
       // Compute a series of transforms that stack Box 2 onto Box 1
       
       vec3 d = vec3(0,2,0);
-      Transform F(R10, d);
+      Transform a(R10, d);
+      Transform F = a * F10 * F20.inverse();
       setColor(vec3(0.5, 0.5,0.5));
-      drawBox(F * F10);
+      drawBox(F * F20);
 
       once = true;
    }

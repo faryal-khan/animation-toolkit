@@ -17,30 +17,48 @@ public:
       body->setLocalRotation(glm::angleAxis(glm::radians<float>(45.0f), vec3(0,1,0)));
       skeleton.addJoint(body);
 
-      Joint* lwing = new Joint("LWing");
-      lwing->setLocalTranslation(vec3(0.1,0,0)*100.0f);
-      skeleton.addJoint(lwing, body);
+      Joint* lwing1 = new Joint("LWing1");
+      lwing1->setLocalTranslation(vec3(0.1,0,0.8)*100.0f);
+      skeleton.addJoint(lwing1, body);
 
-      Joint* rwing = new Joint("RWing");
-      rwing->setLocalTranslation(vec3(-0.1,0,0)*100.0f);
-      skeleton.addJoint(rwing, body);
+      Joint* lwing2 = new Joint("LWing2");
+      lwing2->setLocalTranslation(vec3(0.1,0,0)*100.0f);
+      skeleton.addJoint(lwing2, body);
+
+      Joint* rwing1 = new Joint("RWing1");
+      rwing1->setLocalTranslation(vec3(-0.1,0,0.8)*100.0f);
+      skeleton.addJoint(rwing1, body);
+
+      Joint* rwing2 = new Joint("RWing2");
+      rwing2->setLocalTranslation(vec3(-0.1,0,0)*100.0f);
+      skeleton.addJoint(rwing2, body);
 
       skeleton.fk();
    }
 
    void scene() {
-      Joint* body = skeleton.getByName("Body");
-      Joint* lwing = skeleton.getByName("LWing");
-      lwing->setLocalRotation(glm::angleAxis(sin(elapsedTime()), vec3(0,0,1)));
 
-      Joint* rwing = skeleton.getByName("RWing");
-      rwing->setLocalRotation(glm::angleAxis(-sin(elapsedTime()), vec3(0,0,1))); 
+   
+      Joint* body = skeleton.getByName("Body");
+      Joint* lwing1 = skeleton.getByName("LWing1");
+      lwing1->setLocalRotation(glm::angleAxis(sin(elapsedTime()), vec3(0,0,1)));
+
+      Joint* rwing1 = skeleton.getByName("RWing1");
+      rwing1->setLocalRotation(glm::angleAxis(-sin(elapsedTime()), vec3(0,0,1))); 
+
+      Joint* lwing2 = skeleton.getByName("LWing2");
+      lwing2->setLocalRotation(glm::angleAxis(sin(elapsedTime()), vec3(0,0,1)));
+
+      Joint* rwing2 = skeleton.getByName("RWing2");
+      rwing2->setLocalRotation(glm::angleAxis(-sin(elapsedTime()), vec3(0,0,1)));
       skeleton.fk();
 
       // attach geometry to skeleton 
       Transform B = body->getLocal2Global(); 
-      Transform LT = lwing->getLocal2Global(); 
-      Transform RT = rwing->getLocal2Global(); 
+      Transform LT = lwing1->getLocal2Global(); 
+      Transform RT = rwing1->getLocal2Global(); 
+      Transform LT1 = lwing2->getLocal2Global(); 
+      Transform RT1 = rwing2->getLocal2Global(); 
 
       // draw body
       Transform bodyGeometry(
@@ -66,7 +84,7 @@ public:
       setColor(vec3(0.8, 0, 0.0));
       push();
       transform(LT * lwingGeometry);
-      drawSphere(vec3(0), 1);
+      drawSphere(vec3(0), 1.2);
       pop();
 
       setColor(vec3(0, 0.8, 0.0));
@@ -74,10 +92,60 @@ public:
       transform(RT * rwingGeometry);
       drawSphere(vec3(0), 1);
       pop();
+
+      setColor(vec3(1, 0, 0.0));
+      push();
+      transform(LT1 * lwingGeometry);
+      drawSphere(vec3(0), 1.2);
+      pop();
+
+      setColor(vec3(0, 1, 0.0));
+      push();
+      transform(RT1 * rwingGeometry);
+      drawSphere(vec3(0), 1);
+      pop();
+
+      if(axes == true){
+         setColor(vec3(1, 0, 0.0));
+         push();
+            transform(B);
+            drawEllipsoid(vec3(0,0,0),vec3(300, 0, 0), 5);
+         pop();
+
+         setColor(vec3(0, 1, 0.0));
+         push();
+            transform(B);
+            drawEllipsoid(vec3(0,0,0),vec3(0, 300, 0), 5);
+         pop();
+
+         setColor(vec3(1, 0, 1));
+         push();
+            transform(B);
+            drawEllipsoid(vec3(0,0,0),vec3(0, 0, 300), 5);
+         pop();
+
+      }
+
+       drawText("press P for axes", 20, 20);
+   
+   }
+
+   virtual void keyUp(int key, int mods) {
+      if(key == GLFW_KEY_P){
+         if(axes == true){
+            axes = false;
+         }
+         else{
+            axes = true;
+         }
+      }
+
+
    }
 
 private:
    Skeleton skeleton;
+   bool axes = false;
 };
 
 

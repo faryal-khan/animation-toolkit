@@ -30,7 +30,16 @@ public:
       blend.setFramerate(m1.getFramerate());
 
       // todo: replace the following line with your code
-      blend.appendKey(m1.getKey(0)); // placeholder
+      double duration = m1.getDuration() * (1-_alpha) + m2.getDuration()*_alpha;
+      double deltaT =  1.0f/m1.getFramerate();
+
+      for(double t=0.0;t<=duration;t+=deltaT){
+         Pose pose1 =  m1.getValue(t);
+         Pose pose2 = m2.getValue(t);
+         Pose newPose = Pose::Lerp(pose1, pose2, _alpha);
+         blend.appendKey(newPose);
+      }
+      blend.setFramerate(m1.getFramerate());
       return blend;
    }
 

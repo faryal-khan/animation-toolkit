@@ -32,11 +32,18 @@ public:
    {
       Motion result;
       result.setFramerate(motion.getFramerate());
+      vec3 head = vec3(0, heading, 0);
+      for(int i=0;i<motion.getNumKeys();i++){
 
-      // todo: your code here
-      Pose pose = motion.getKey(0);
-      result.appendKey(pose);
-      
+         Pose current = motion.getKey(i);
+         Joint* theRoot = _skeleton.getByName("Beta:Hips");
+         current.jointRots[theRoot->getID()] = eulerAngleRO(XYZ, head);
+         current.rootPos = pos + current.rootPos*eulerAngleRO(XYZ, head);
+         
+         result.appendKey(current);
+         
+      }
+      result.setFramerate(motion.getFramerate());
       return result;
    }
 

@@ -34,8 +34,20 @@ public:
 
       Motion result;
       result.setFramerate(motion.getFramerate());
-      // todo: your code here
-      result.appendKey(motion.getKey(0));
+      glm::quat leftFinal= leftLocalRot*( inverse(leftArm->getLocalRotation()));
+      glm::quat rightFinal= rightLocalRot*( inverse(rightArm->getLocalRotation()));
+      glm::quat elbowFinal= elbowLocalRot*( inverse(leftElbow->getLocalRotation()));
+
+      for(int i=0;i< motion.getNumKeys();i++){
+         Pose current = motion.getKey(i);
+
+         current.jointRots[leftElbow->getID()]= elbowLocalRot;
+         current.jointRots[rightElbow->getID()] = elbowLocalRot;
+         current.jointRots[leftArm->getID()] =  current.jointRots[leftArm->getID()] * leftFinal;
+         current.jointRots[rightArm->getID()] = current.jointRots[rightArm->getID()] * rightFinal;
+
+         result.appendKey(current);
+      }
 
       return result;
    }
@@ -53,8 +65,19 @@ public:
 
       Motion result;
       result.setFramerate(motion.getFramerate());
-      // todo: your code here
-      result.appendKey(motion.getKey(0));
+
+      for(int i=motion.getNumKeys();i>=0;i--){
+         Pose current = motion.getValue(i);
+
+         current.jointRots[leftArm->getID()] = leftRot;
+         current.jointRots[rightArm->getID()] = rightRot;
+
+         current.jointRots[leftElbow->getID()]= elbowRot;
+         current.jointRots[rightElbow->getID()] = elbowRot;
+
+         result.appendKey(current);
+      }
+
 
       return result;
    }

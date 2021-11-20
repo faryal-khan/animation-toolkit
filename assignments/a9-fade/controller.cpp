@@ -41,20 +41,47 @@ public:
 
   virtual void update()
   {
+    vel = (float)(100) * glm::vec3(0, 0,_heading);
     _walk.update(_skeleton, elapsedTime());
+    
 
+    vec3 p = _skeleton.getRoot()->getGlobalTranslation();
     // TODO: Your code here
+    for(int i=0;i<_walk.getNumKeys();i++){
+      Pose current = _walk.getKey(i);
+      current.rootPos = p + vel * dt();
+      _walk.editKey(i, current);
 
+    }
+    glm::vec3 moveFwd = _skeleton.getByName("Beta:Head")->getLocal2Global().transformVector(glm::vec3(0,0,-190));
     // TODO: Override the default camera to follow the character
-    // lookAt(pos, look, vec3(0, 1, 0));
+     lookAt(_skeleton.getByName("Beta:Head")->getGlobalTranslation()+moveFwd, _skeleton.getByName("Beta:Head")->getGlobalTranslation(), vec3(0, 1, 0));
+
 
     // update heading when key is down
-    if (keyIsDown('D')) _heading -= 0.05;
-    if (keyIsDown('A')) _heading += 0.05;
+    if (keyIsDown('D')) {
+      _heading -= 0.05;
+      for(int i=0;i<_walk.getNumKeys();i++){
+        Pose current = _walk.getKey(i);
+        current.jointRots[0] = glm::angleAxis(_heading, vec3(0,1,0));
+        _walk.editKey(i, current);
+
+      }
+    }
+    if (keyIsDown('A')){
+      _heading += 0.05;
+      for(int i=0;i<_walk.getNumKeys();i++){
+        Pose current = _walk.getKey(i);
+        current.jointRots[0] = glm::angleAxis(_heading, vec3(0,1,0));
+        _walk.editKey(i, current);
+
+      }
+    }
   }
 
 protected:
   float _heading;
+  glm::vec3 vel; 
 
   Motion _walk;
   Skeleton _skeleton;

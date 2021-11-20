@@ -127,6 +127,7 @@ class AIKSimple : public atkui::Framework
   void solveIKTwoLink(Skeleton &skeleton, const vec3 &goalPosition)
   {
     // todo: implement two link IK algorithm
+    
   }
 
  private:

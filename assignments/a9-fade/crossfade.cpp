@@ -36,8 +36,47 @@ public:
 
     int start1 = motion1_.getNumKeys() - numBlendFrames;
     int start2 = 0;
-
     // TODO: Your code here
+    
+    for(int i=0;i<motion1_.getNumKeys()-numBlendFrames;i++){
+      blend_.appendKey(motion1_.getKey(i));
+    }
+
+    std::vector<Pose> first_m;
+    std::vector<Pose> last_m;
+
+    for(int i=motion1_.getNumKeys()-(numBlendFrames+1);i<motion1_.getNumKeys();i++){
+      first_m.push_back(motion1_.getKey(i));
+    }
+
+    for(int i=0;i<numBlendFrames+1;i++){
+      alpha_ += 1/numBlendFrames;
+      last_m.push_back(motion2_.getKey(i));
+      Pose curr = Pose::Lerp(first_m[i], last_m[i], alpha_);
+      blend_.appendKey(curr);
+    }
+
+    vec3 dfirst = motion1_.getKey(motion1_.getNumKeys()-1).rootPos;
+    quat Rfirst = motion1_.getKey(motion1_.getNumKeys()-1).jointRots[0];
+    Transform F_fir(Rfirst, dfirst);
+
+    vec3 dsec = motion2_.getKey(0).rootPos;
+    quat Rsec = motion2_.getKey(0).jointRots[0];
+    Transform F_sec(Rsec, dsec);
+
+    Transform offset = F_fir*F_sec.inverse(); 
+
+    for(int i=numBlendFrames+1;i<motion2_.getNumKeys();i++){
+      Pose current = motion2_.getKey(i);
+      current.rootPos = current.rootPos + offset.t();
+      current.jointRots[0] = motion2_.getKey(i).jointRots[0] * offset.r();
+      motion2_.editKey(i, current);
+
+      blend_.appendKey(motion2_.getKey(i));
+    }
+    blend_.setFramerate(motion1_.getFramerate());
+    
+
   }
 
   void save(const std::string &filename)
@@ -58,6 +97,7 @@ private:
   Motion motion1_;
   Motion motion2_;
   Motion blend_;
+  double alpha_ = 0;
 };
 
 std::string PruneName(const std::string &name)

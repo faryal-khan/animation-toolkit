@@ -53,7 +53,7 @@ public:
       _walk.editKey(i, current);
 
     }
-    glm::vec3 moveFwd = _skeleton.getByName("Beta:Head")->getLocal2Global().transformVector(glm::vec3(0,0,-190));
+    glm::vec3 moveFwd = _skeleton.getByName("Beta:Head")->getLocal2Global().transformVector(glm::vec3(0,0,-200));
     // TODO: Override the default camera to follow the character
      lookAt(_skeleton.getByName("Beta:Head")->getGlobalTranslation()+moveFwd, _skeleton.getByName("Beta:Head")->getGlobalTranslation(), vec3(0, 1, 0));
 

@@ -45,7 +45,7 @@ class AIKSimple : public atkui::Framework
     wrist->setLocalTranslation(vec3(80, 0, 0));
 
     mActor.fk();
-    mGoalPosition = wrist->getGlobalTranslation();
+    mGoalPosition = glm::vec3(100, 0, 0);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -127,6 +127,47 @@ class AIKSimple : public atkui::Framework
   void solveIKTwoLink(Skeleton &skeleton, const vec3 &goalPosition)
   {
     // todo: implement two link IK algorithm
+    glm::vec3 wrist = skeleton.getByID(2)->getLocalTranslation();
+    glm::vec3 elb = skeleton.getByID(1)->getLocalTranslation();
+    glm::vec3 should = skeleton.getByID(0)->getLocalTranslation();
+
+    float l1 = length(elb-should);
+    float l2 = length(wrist-elb);
+
+    float r = length(length(mGoalPosition)-should);
+    float theta = (r*r - l1*l1 -l2*l2)/(-2.0f*l1*l2);
+
+    if(theta>1){
+      theta = 1;
+    }
+    if(theta < -1){
+      theta = -1;
+    }
+
+    theta = acos(theta);
+
+    float theta2z = theta - M_PI;
+    float theta1z = (-1*l2*sin(theta2z))/r;
+
+    if(theta1z>1){
+      theta1z = 1;
+    }
+    if(theta1z < -1){
+      theta1z = -1;
+    }
+
+    theta1z = asin(theta1z);
+
+    float b = atan2(-1*mGoalPosition.z, mGoalPosition.x);
+    float g = asin(mGoalPosition.y/r);
+
+    glm::quat first = angleAxis(theta2z, glm::vec3(0,0,1));
+    glm::quat second = angleAxis(g, glm::vec3(0, 0, 1)) * angleAxis(b, glm::vec3(0,1,0)) * angleAxis(theta1z, glm::vec3(0,0,1));
+
+    skeleton.getByID(1)->setLocalRotation(first);
+    skeleton.getByID(0)->setLocalRotation(second);
+
+    skeleton.fk();
     
   }
 

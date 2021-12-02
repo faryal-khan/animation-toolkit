@@ -29,7 +29,18 @@ public:
    }
 
    void lookAtTarget(Joint* head, const vec3& target) {
-      // TODO: Your code here
+      // TODO: Your code here]
+
+      vec3 pd = target-head->getGlobalTranslation();
+      vec3 r = vec3(0, 0, 1);
+      vec3 e = target-head->getGlobalTranslation();
+      
+
+      vec3 cross = vec3(glm::cross(r, e));
+
+      float angle = atan2(length(cross), dot(r, e)+dot(r, r));
+
+      head->setLocalRotation(head->getLocalRotation() * inverse(head->getGlobalRotation()) * glm::angleAxis(angle, cross/length(cross)));
       head->fk();
    }
 

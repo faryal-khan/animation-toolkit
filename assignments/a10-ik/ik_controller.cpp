@@ -27,8 +27,20 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   Joint* hip = knee->getParent();
 
   // TODO: Your code here
-  
 
+  // vec3 r = ankle.getGlobalTranslation()- hip.getGlobalTranslation();
+  // vec3 l1 = ankle.getGlobalTranslation()- knee.getGlobalTranslation();
+  // vec3 l2 = knee.getGlobalTranslation()-hip.getGlobalTranslation();
+
+  // float top = pow(r, 2) * pow(l1, 2) * pow(l2, 2);
+  // float bottom = -2 * l1 * l2;
+  
+  // float phi = acos(top, bottom);
+  // float theta2z = phi-180;
+
+  // float theta1z = asin((-l2*sin(theta2z)/r);
+
+  //  current->setLocalRotation(glm::angleAxis(theta2z, inverse(knee->getParent()->getGlobalRotation()) *(cross/length(cross))) *knee->getLocalRotation());
 
 
   return true;

@@ -20,6 +20,8 @@ public:
       BVHReader reader;
       reader.load("../motions/Beta/idle.bvh", _skeleton, _motion);
       _drawer.color = vec3(1,0,0);
+      thetaRate = 3.0;
+      theta = 0.0;
    }
 
    void update()
@@ -34,6 +36,15 @@ public:
    void scene()
    {  
       update();
+
+      theta += thetaRate * dt();
+      float py = 50.0f *sin(theta);
+      float px1 = _skeleton.getByName("Beta:LeftHand")->getGlobalTranslation().x;
+      float px2 = _skeleton.getByName("Beta:RightHand")->getGlobalTranslation().x;
+
+      _lhandTarget = vec3(px1, py+(0.5*height() -140), 20);
+      _rhandTarget = vec3(px2, -py+((0.5*height() -140)), 20);
+
       _drawer.draw(_skeleton, *this);
       setColor(vec3(0,0,1));
       drawSphere(_lhandTarget, 10);
@@ -48,6 +59,9 @@ protected:
    // Hand target positions
    vec3 _lhandTarget;
    vec3 _rhandTarget;
+   float thetaRate;
+   float theta;
+
 };
 
 int main(int argc, char** argv)

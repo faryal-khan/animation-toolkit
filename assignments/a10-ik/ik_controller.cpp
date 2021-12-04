@@ -27,6 +27,10 @@ bool IKController::solveIKAnalytic(Skeleton& skeleton,
   Joint* hip = knee->getParent();
 
   // TODO: Your code here
+  
+
+
+
   return true;
 }
 void lookAtTarget(Joint* end, Joint* current, const vec3& target, float nudge) {
@@ -34,11 +38,17 @@ void lookAtTarget(Joint* end, Joint* current, const vec3& target, float nudge) {
 
       vec3 r = end->getGlobalTranslation()-current->getGlobalTranslation();
       vec3 e = target-end->getGlobalTranslation();
-      
+
+      if(length(r)==0 || length(e) == 0){
+        return;
+      }
+
       vec3 cross = vec3(glm::cross(r, e));
 
       float angle = nudge * atan2(length(cross), dot(r, e)+dot(r, r));
-
+      if(angle == 0 || length(current->getParent()->getGlobalRotation())==0 || length(current->getLocalRotation())==0 || length(cross/length(cross))==0){
+        return;
+      }
       current->setLocalRotation(glm::angleAxis(angle, inverse(current->getParent()->getGlobalRotation()) *(cross/length(cross))) *current->getLocalRotation());
       current->fk();
 

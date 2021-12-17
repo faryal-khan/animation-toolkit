@@ -10,7 +10,7 @@ using namespace atk;
 ABehavior::ABehavior(const char* name) : _name(name)
 {
    // TODO: set good values
-   setParam("MaxSpeed", 1);
+   setParam("MaxSpeed", 50);
    setParam("AgentRadius", 1);
 }
 
@@ -19,6 +19,7 @@ ABehavior::ABehavior(const char* name) : _name(name)
 
 ASeek::ASeek() : ABehavior("Seek") 
 { 
+   
 }
 
 //
@@ -32,7 +33,8 @@ ASeek::ASeek() : ABehavior("Seek")
 vec3 ASeek::calculateDesiredVelocity(const ASteerable& actor,
    const AWorld& world, const vec3& target)
 {
-   return vec3(0,0,0);
+   vec3 res = normalize(target-actor.getPosition())*getParam("MaxSpeed");
+   return res;
 }
 
 //--------------------------------------------------------------
